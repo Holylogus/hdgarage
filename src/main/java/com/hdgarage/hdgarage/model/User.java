@@ -1,6 +1,8 @@
 package com.hdgarage.hdgarage.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,11 +13,18 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
+
+    @NotEmpty(message = "Username cannot be empty")
     private String username;
+
+    @NotEmpty(message = "Password cannot be empty")
     private String password;
+
+    @Email(message = "Email should be valid")
+    @NotEmpty(message = "Email cannot be empty")
     private String email;
+
     private String phone;
     private String birthday;
 
@@ -33,8 +42,7 @@ public class User {
         super();
     }
 
-    public User(Long id, String username, String password, String email, String phone, String birthday) {
-        this.id = id;
+    public User(String username, String password, String email, String phone, String birthday) {
         this.username = username;
         this.password = password;
         this.email = email;
