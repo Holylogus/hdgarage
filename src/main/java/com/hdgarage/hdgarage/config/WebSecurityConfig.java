@@ -18,8 +18,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
     @Bean
@@ -35,33 +33,15 @@ public class WebSecurityConfig {
         configuration.addAllowedMethod("POST");
         configuration.addAllowedMethod("PUT");
         configuration.addAllowedMethod("DELETE");
+        configuration.addAllowedMethod("OPTIONS");
+        configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); //CORS beállítások alkalmazása
         return source;
     }
 
-    @SuppressWarnings("removal")
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable(); //CSRF kikapcs - csak teszthez
-        http.authorizeRequests(authorize -> authorize.requestMatchers("/login","/register", "/hello").permitAll() //Engedélyezés a nyílvános útvonalaknak
-                .anyRequest().authenticated() //Minden más kérés hitelesítést igényel
-        )
-                .cors()
-                .and().httpBasic(); //Http basic auth
 
-        return http.build();
-    }
 
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder
-                .inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder().encode("password")).roles("USER");
-
-        return authenticationManagerBuilder.build();
-    }
 }

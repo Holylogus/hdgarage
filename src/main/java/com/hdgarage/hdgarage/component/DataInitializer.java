@@ -27,6 +27,7 @@ public class DataInitializer {
             adminUser.setPhone("+36302699436");
             adminUser.setBirthday("1994-10-14");
             adminUser.setEnabled(true);
+            adminUser.setRole("ADMIN");
 
 
             userService.saveUser(adminUser);
