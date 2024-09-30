@@ -11,13 +11,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired()
-    private PasswordEncoder passwordEncoder;
+
 
 
     public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(true);
         userRepository.save(user);
     }
 
